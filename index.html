@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>weather-forcast</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="card">
+        <div class="search">
+            <input class="search-box" type=" text" placeholder="enter city name">
+            <button class="button"><img src="search.png" alt=""></button>
+        </div>
+        <div class="weather" id="weather">
+            <div class="weather-icon">
+                <img src="Partly cloudy.png"  class="varmaa">
+                <h1  id="temp_c">21°C</h1>
+                <p  id="citi" >Narasapuram</p>
+            </div>
+            <div class="details">
+                <div class="humidity">
+                    <img src="weather.png" alt=" humidity">
+                    <h3 id="humid">
+                        30%
+                    </h3>
+                    <p>Humidity</p>
+                </div>
+                <div class="wind">
+                    <img src="wind.png" alt=" wind">
+                    <h3 id="windspeed">
+                        25 km/h
+                    </h3>
+                    <p>Wind Speed</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</body>
+<script >
+    const apikey="https://api.weatherapi.com/v1/current.json?key=ea39029a24e34dd781e150750242502&q=";
+    const searchBox = document.querySelector(".search input");
+    const searchBtn = document.querySelector(".search button");
+    const weather = document.querySelector(".varmaa");
+    
+    
+    async function check(city){
+        const response= await fetch(apikey+city);
+        var data=await response.json();
+        console.log(data);
+        console.log(data.current.condition.text);
+    
+        document.getElementById("citi").innerText=data.location.name;
+        document.getElementById("temp_c").innerText=data.current.temp_c+"°C";
+        document.getElementById("humid").innerText=data.current.humidity+"%";
+        document.getElementById("windspeed").innerText=data.current.wind_kph+" km/h";
+        document.getElementById("weather").style.display="block";
+        if(data.current.condition.text=="Sunny"){
+            weather.src ="sun.png";
+        }
+        else if(data.current.condition.text=="Partly cloudy"){
+            weather.src =" Partly cloudy.png"; 
+        }
+        else if(data.current.condition.text=="Overcast"){
+            weather.src ="clouds.png"; 
+        }
+        else if(data.current.condition.text=="Mist"){
+            weather.src ="snow.png"; 
+        }
+        else if(data.current.condition.text=="Clear "){
+            weather.src ="moon.png"; 
+        }
+        else if(data.current.condition.text=="Light rain"){
+            weather.src ="rainy-day.png"; 
+        }
+    
+    
+    
+    }
+    
+    searchBtn.addEventListener("click",() => {
+        check(searchBox.value);
+    })
+    
+    
+    </script>
+</html>
